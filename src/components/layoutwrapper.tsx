@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Topbar from "@/components/topbar";
 
 export default function LayoutWrapper({
@@ -9,6 +9,19 @@ export default function LayoutWrapper({
   children: React.ReactNode;
 }) {
   const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    // Check system preference on mount
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    setDarkMode(prefersDark);
+
+    // Optional: Listen for changes in system preference
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleChange = (e: MediaQueryListEvent) => setDarkMode(e.matches);
+    mediaQuery.addEventListener("change", handleChange);
+
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
 
   return (
     <div className={darkMode ? "dark" : ""}>

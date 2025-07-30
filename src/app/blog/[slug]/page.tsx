@@ -11,8 +11,9 @@ type Props = {
   params: { slug: string };
 };
 
-// ✅ Generate SEO Metadata
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const { params } = props;
   const post = getPostBySlug(params.slug);
   if (!post) notFound();
 
@@ -36,7 +37,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 // ✅ Actual Blog Page
-export default function BlogPostPage({ params }: Props) {
+export default function BlogPostPage(props: Props) {
+  const { params } = props;
   const post = getPostBySlug(params.slug);
   if (!post) notFound();
 
